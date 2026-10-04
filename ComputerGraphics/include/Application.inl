@@ -180,6 +180,11 @@ void Application::Run()
 	}
 }
 
+void Application::CaptureMouse()
+{
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 void Application::EnableOpenGLFeatures(GLenum features)
 {
 	glEnable(features);

@@ -3,6 +3,10 @@
 #include <Application.h>
 #include <Application.inl>
 
+#define CG_MESH_ENABLE_COLOR
+#include <Mesh.h>
+#include <Mesh.inl>
+
 #include <gl/glew.h>
 
 int main()
@@ -11,6 +15,7 @@ int main()
 	int code = app.Init("I hate computer graphics");
 	if (code)
 		return code;
+	app.CaptureMouse();
 	app.Run();
 }
 

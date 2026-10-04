@@ -125,7 +125,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;shell32.lib;winmm.lib;opengl32.lib;glfw3.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;shell32.lib;winmm.lib;opengl32.lib;glfw3.lib;glew32.lib;assimp-vc145-mtd.lib</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -146,13 +146,16 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;shell32.lib;winmm.lib;opengl32.lib;glfw3.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;shell32.lib;winmm.lib;opengl32.lib;glfw3.lib;glew32.lib;assimp-vc145-mt.lib</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Mesh.inl">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClCompile Include="src\2_opengl_basics\practice-13.cpp" />
     <ClCompile Include="src\99_labs\neon-cube.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -243,6 +246,7 @@
     <ClInclude Include="include\Application.inl">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="include\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\1_opengl_basics\circle.fs" />

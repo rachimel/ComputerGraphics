@@ -109,5 +109,11 @@
     <ClInclude Include="include\Application.inl">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\Mesh.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mesh.inl">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

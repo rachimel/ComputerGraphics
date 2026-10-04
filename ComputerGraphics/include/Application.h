@@ -31,6 +31,8 @@ public:
 // Basic Methods
 	int Init(std::string_view title);
 	void Run();
+
+	void CaptureMouse();
 	void EnableOpenGLFeatures(unsigned int features);
 	void DisableOpenGLFeatures(unsigned int features);
 
