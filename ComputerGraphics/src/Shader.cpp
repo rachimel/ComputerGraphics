@@ -8,8 +8,6 @@
 
 #include <limits>
 
-float e = std::numeric_limits<float>::epsilon();
-
 Shader::Shader(std::string_view vertexShaderSource, std::string_view fragmentShaderSource)
 {
 	unsigned int vertexShader, fragmentShader;

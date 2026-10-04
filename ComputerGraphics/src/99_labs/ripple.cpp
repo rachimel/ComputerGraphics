@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <Shader.h>
 
@@ -88,19 +89,49 @@ int main()
 		lastTime = currentTime;
 
 		float x = 0.5f * cos(t);
+		float y = 0.5f * sin(t);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBindVertexArray(VAO);
 		shader.Bind();
 		glPointSize(5.0f);
 		t += deltaTime;
-		shader.SetUniform("a_Color", glm::vec4(0.8f, 0.4f, 0.8f, 0.8f));
+
+		shader.SetUniform("a_Color", glm::vec4(
+			(glm::sin(t) + 1) * 0.5f, 
+			(glm::sin(t + (glm::pi<float>() * 2.0f / 3.0f)) + 1) * 0.5f, 
+			(glm::sin(t + (glm::pi<float>() * 4.0f / 3.0f)) + 1) * 0.5f,
+			x + 0.5f
+		));
 		shader.SetUniform("t", t);
-		shader.SetUniform("a_Translation", glm::vec2(-x, 0.0f));
+		shader.SetUniform("a_Translation", glm::vec2(0.5f * cos(t), 0.0f));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 
-		shader.SetUniform("a_Color", glm::vec4(0.4f, 0.8f, 0.4f, 0.5f));
-		shader.SetUniform("a_Translation", glm::vec2(x, 0.0f));
+		shader.SetUniform("a_Color", glm::vec4(
+			(glm::sin(t + glm::pi<float>()) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 5.0f / 3.0f)) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 7.0f / 3.0f)) + 1) * 0.5f,
+			x + 0.5f
+		));
+		shader.SetUniform("a_Translation", glm::vec2(-0.5f * cos(t), 0.0f));
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+
+		shader.SetUniform("a_Color", glm::vec4(
+			(glm::sin(t) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 2.0f / 3.0f)) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 4.0f / 3.0f)) + 1) * 0.5f,
+			y + 0.5f
+		));
+		shader.SetUniform("a_Translation", glm::vec2(0.0f, 0.5f * cos(t)));
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+
+		shader.SetUniform("a_Color", glm::vec4(
+			(glm::sin(t + glm::pi<float>()) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 5.0f / 3.0f)) + 1) * 0.5f,
+			(glm::sin(t + (glm::pi<float>() * 7.0f / 3.0f)) + 1) * 0.5f,
+			y + 0.5f
+		));
+		shader.SetUniform("a_Translation", glm::vec2(0.0f, -0.5f * cos(t)));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
