@@ -42,6 +42,38 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 	glBindVertexArray(0);
 }
 
+Mesh::~Mesh()
+{
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &VAO);
+}
+
+Mesh::Mesh(Mesh&& rhs)
+	: VAO{rhs.VAO}, VBO{rhs.VBO}, EBO{rhs.EBO},
+	m_Vertices{std::move(rhs.m_Vertices)}, m_Indices{std::move(rhs.m_Indices)}
+{
+	rhs.VAO = 0;
+	rhs.VBO = 0;
+	rhs.EBO = 0;
+}
+
+Mesh& Mesh::operator=(Mesh&& rhs) noexcept
+{
+	if (this == &rhs)
+	{
+		return *this;
+	}
+	VAO = rhs.VAO;
+	VBO = rhs.VBO;
+	EBO = rhs.EBO;
+
+	m_Vertices = std::move(rhs.m_Vertices);
+	m_Indices = std::move(rhs.m_Indices);
+
+	return *this;
+}
+
 void Mesh::Bind()
 {
 	glBindVertexArray(VAO);

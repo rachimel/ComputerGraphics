@@ -173,6 +173,8 @@ void Application::Run()
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
+		projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
+
 		PollInputs();
 		Update();
 		Render();

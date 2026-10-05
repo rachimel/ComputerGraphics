@@ -64,6 +64,9 @@ private:
 private:
 	GLFWwindow* m_Window;
 
+	bool isMouseOutOfFocus{};
+	bool isCameraDisabled{};
+
 	Camera m_Camera;
 	glm::mat4 projection;
 	float m_Near{ 0.1f };

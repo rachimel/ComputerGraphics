@@ -22,7 +22,14 @@ class Mesh
 {
 public:
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
- 	~Mesh() = default;
+	~Mesh();
+
+	Mesh(const Mesh&) = delete;
+	Mesh& operator= (const Mesh&) = delete;
+
+	Mesh(Mesh&& rhs);
+	Mesh& operator= (Mesh&& rhs) noexcept;
+
 	void Bind();
 public:
 	std::vector<Vertex> m_Vertices;
@@ -30,4 +37,6 @@ public:
 private:
 	unsigned int VAO, VBO, EBO;
 };
+
+
 
