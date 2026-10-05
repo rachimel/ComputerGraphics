@@ -4,7 +4,7 @@ struct GLFWwindow;
 
 #include <string_view>
 #include <glm/glm.hpp>
-#include <Camera.h>
+#include <memory>
 
 class Application
 {
@@ -28,27 +28,29 @@ public:
 #endif
 	// FrameBuffer callback override is currently not supported.
 
-#if defined(CG_APPLICATION_POLL_INPUT)
-	void PollInputs();
-#endif
 // Basic Methods
 	int Init(std::string_view title);
 	void Run();
 
+	void PollInputs();
 	void CaptureMouse();
 	void EnableOpenGLFeatures(unsigned int features);
 	void DisableOpenGLFeatures(unsigned int features);
 
+	void CreateCamera(const glm::vec3& pos, const glm::vec3& worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float fovy = 45.0f, float yaw = 0.0f, float pitch = 0.0f);
 	void SetNearPlane(float zNear);
 	void SetFarPlane(float zFar);
 // Override Methods
 	void OnInit();
 	void Update();
 	void Render();
+#if defined(CG_APPLICATION_CUSTOM_POLL_INPUT)
+	void OnInputPoll();
+#endif
 // Callback entry & default callback handlers
 private:
-	static void MouseButtonCallbackEntry(GLFWwindow* window, int key, int action, int mods);
-	// void MouseButtonCallback(GLFWwindow* window, int key, int action, int mods);
+	static void MouseButtonCallbackEntry(GLFWwindow* window, int button, int action, int mods);
+	void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 	static void CursorPosCallbackEntry(GLFWwindow* window, double xPos, double yPos);
 	void CursorPosCallback(GLFWwindow* window, float xPos, float yPos);
@@ -64,10 +66,9 @@ private:
 private:
 	GLFWwindow* m_Window;
 
-	bool isMouseOutOfFocus{};
-	bool isCameraDisabled{};
+	bool isMouseOutOfFocus{true};
 
-	Camera m_Camera;
+	std::unique_ptr<class Camera> m_Camera;
 	glm::mat4 projection;
 	float m_Near{ 0.1f };
 	float m_Far{ 1000.0f };

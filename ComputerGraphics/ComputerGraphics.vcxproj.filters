@@ -87,6 +87,9 @@
     <ClCompile Include="src\2_opengl_basics\practice-14.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-15.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\opengl-basics\quadShader.vs" />

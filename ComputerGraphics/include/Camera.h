@@ -18,16 +18,23 @@ public:
 	void Zoom(float fovy);
 	void PlaceAt(const glm::vec3& pos);
 
+	void FocusAt(const glm::vec3& vec);
 	void OrientAt(float yaw = 0.0f, float pitch = 0.0f);
 	void Rotate(float yawDelta = 0.0f, float pitchDelta = 0.0f);
 
-	void Move(CameraDir dir, float speed, float dt);
+	void Move(CameraDir dir, float dt);
 
 	glm::mat4 ProjectionMatrix(float aspect, float zNear, float zFar) const;
 	glm::mat4 ViewMatrix() const;
+
+	void ChangeSpeed(float speed);
+	void ChangeSensitivity(float sensitivity);
 private:
 	void UpdateCameraBasis();
 private:
+	float m_Speed{5.0f};
+	float m_Sensitivity{0.05f};
+
 	float m_Yaw{};
 	float m_Pitch{};
 	float m_Fovy{}; // vertical field of view

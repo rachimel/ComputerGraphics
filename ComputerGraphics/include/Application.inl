@@ -4,6 +4,7 @@
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
 #include <Application.h>
+#include <Camera.h>
 
 // The Application class was designed with the following requirements:
 //
@@ -28,6 +29,7 @@
 
 Application::Application(int width, int height)
 	: m_Window{}, projection{glm::mat4(1.0f)},
+	m_Camera{},
 	m_ScreenSize {static_cast<float>(width), static_cast<float>(height)}
 {
 
@@ -42,13 +44,23 @@ Application::~Application()
 
 void Application::MouseButtonCallbackEntry(GLFWwindow* window, int button, int action, int mods)
 {
-#if defined(CG_APPLICATION_CUSTOM_CALLBACK_MOUSE_BUTTON)
 	Application* app = reinterpret_cast<Application*>(glfwGetWindowUserPointer(window));
 	if (app)
 	{
+#if defined(CG_APPLICATION_CUSTOM_CALLBACK_MOUSE_BUTTON)
 		app->OnMouseButtonEvent(window, button, action, mods);
-	}
 #endif
+		app->MouseButtonCallback(window, button, action, mods);
+	}
+}
+
+void Application::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (m_Camera && isMouseOutOfFocus)
+	{
+		CaptureMouse();
+		return;
+	}
 }
 
 void Application::CursorPosCallbackEntry(GLFWwindow* window, double xPos, double yPos) 
@@ -65,7 +77,20 @@ void Application::CursorPosCallbackEntry(GLFWwindow* window, double xPos, double
 
 void Application::CursorPosCallback(GLFWwindow* window, float xPos, float yPos)
 {
+	if (m_Camera && glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+	{
+		float xOffset = (xPos - m_MousePos.x);
+		float yOffset = (m_MousePos.y - yPos);
+
+		m_Camera->Rotate(xOffset, yOffset);
+	}
+
 	m_MousePos = glm::vec2(xPos, yPos);
+
+	if (isMouseOutOfFocus)
+	{
+		m_MousePos = glm::vec2(xPos, yPos);
+	}
 }
 
 void Application::KeyCallbackEntry(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -101,7 +126,6 @@ void Application::FrameBufferSizeCallback(GLFWwindow* window, int width, int hei
 {
 	glViewport(0, 0, width, height);
 	m_ScreenSize = glm::vec2(static_cast<float>(width), static_cast<float>(height));
-	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }
 
 int Application::Init(std::string_view title)
@@ -136,12 +160,7 @@ int Application::Init(std::string_view title)
 
 	glfwSetWindowUserPointer(m_Window, this);
 	// Register Callbacks
-#if defined (CG_APPLICATION_CUSTOM_CALLBACK_MOUSE_BUTTON)
 	glfwSetMouseButtonCallback(m_Window, Application::MouseButtonCallbackEntry);
-#else
-	glfwSetMouseButtonCallback(m_Window, nullptr);
-#endif
-
 	glfwSetCursorPosCallback(m_Window, Application::CursorPosCallbackEntry);
 
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_KEY)
@@ -173,7 +192,8 @@ void Application::Run()
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
-		projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
+		if(m_Camera)
+			projection = m_Camera->ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 
 		PollInputs();
 		Update();
@@ -184,9 +204,52 @@ void Application::Run()
 	}
 }
 
+void Application::CreateCamera(
+	const glm::vec3& pos, 
+	const glm::vec3& worldUp /*= glm::vec3(0.0f, 1.0f, 0.0f)*/,
+	float fovy  /*= 45.0f*/, 
+	float yaw   /*= 0.0f*/, 
+	float pitch /*= 0.0f*/
+)
+{
+	m_Camera = std::make_unique<Camera>();
+	m_Camera->PlaceAt(pos);
+	m_Camera->RefWorldUp(worldUp);
+	m_Camera->Zoom(fovy);
+	m_Camera->OrientAt(yaw, pitch);
+}
+
+
+void Application::PollInputs()
+{
+#if defined(CG_APPLICATION_CUSTOM_POLL_INPUT)
+	OnInputPoll();
+#endif
+	if (m_Camera)
+	{
+		if (glfwGetKey(m_Window, GLFW_KEY_KP_8) == GLFW_PRESS)
+		{
+			m_Camera->Move(CameraDir::Up, deltaTime);
+		}
+		else if (glfwGetKey(m_Window, GLFW_KEY_KP_2) == GLFW_PRESS)
+		{
+			m_Camera->Move(CameraDir::Down,deltaTime);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_KP_4) == GLFW_PRESS)
+		{
+			m_Camera->Move(CameraDir::Left,deltaTime);
+		}
+		else if (glfwGetKey(m_Window, GLFW_KEY_KP_6) == GLFW_PRESS)
+		{
+			m_Camera->Move(CameraDir::Right,deltaTime);
+		}
+	}
+}
+
 void Application::CaptureMouse()
 {
 	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	isMouseOutOfFocus = false;
 }
 
 void Application::EnableOpenGLFeatures(GLenum features)
@@ -202,11 +265,9 @@ void Application::DisableOpenGLFeatures(GLenum features)
 void Application::SetNearPlane(float zNear)
 {
 	m_Near = zNear;
-	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }
 
 void Application::SetFarPlane(float zFar)
 {
 	m_Far = zFar;
-	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }

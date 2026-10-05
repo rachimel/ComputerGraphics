@@ -1,5 +1,4 @@
-#define CG_APPLICATION_POLL_INPUT
-#define CG_APPLICATION_CUSTOM_CALLBACK_CURSOR_POS
+#define CG_APPLICATION_CUSTOM_POLL_INPUT
 #define CG_APPLICATION_CUSTOM_CALLBACK_KEY
 #define CG_APPLICATION_CUSTOM_CALLBACK_CHAR
 
@@ -22,10 +21,7 @@ namespace
 	std::optional<Model> axes{};
 
 	std::optional<Shader> shader{};
-	bool firstMove = true;
-	float sensitivity = 0.05f;
-	float speed = 5.0f;
-
+	float speed{ 5.0f };
 	std::random_device rd;
 	std::default_random_engine dre{ rd() };
 
@@ -69,10 +65,8 @@ void Application::OnInit()
 
 	shader.emplace("shaders\\1_opengl_basics\\perspectiveProjection.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
 
-	m_Camera.PlaceAt(glm::vec3(0.0f, 3.0f, 3.0f));
-	m_Camera.Zoom(45.0f);
-	m_Camera.OrientAt(-90.0f, 0.0f);
-	m_Camera.RefWorldUp(glm::vec3(0.0f, 1.0f, 0.0f));
+	CreateCamera(glm::vec3(1.0f, 1.0f, 1.0f));
+	m_Camera->FocusAt(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void Application::Update()
@@ -103,7 +97,7 @@ void Application::Render()
 
 	shader->Bind();
 	shader->SetUniform("projection", projection);
-	shader->SetUniform("view", m_Camera.ViewMatrix());
+	shader->SetUniform("view", m_Camera->ViewMatrix());
 	shader->SetUniform("model", model);
 
 	auto& axesMeshes = axes->Meshes();
@@ -122,22 +116,6 @@ void Application::Render()
 		model = glm::scale(model, glm::vec3(0.5f));
 		shader->SetUniform("model", model);
 		Draw(*shader);
-	}
-}
-
-void Application::OnCursorMoveEvent(GLFWwindow* window, float xPos, float yPos)
-{
-	if (firstMove)
-	{
-		m_MousePos = glm::vec2(xPos, yPos);
-		firstMove = false;
-	}
-	if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
-	{
-		float xOffset = (xPos - m_MousePos.x) * sensitivity;
-		float yOffset = (m_MousePos.y - yPos) * sensitivity;
-
-		m_Camera.Rotate(xOffset, yOffset);
 	}
 }
 
@@ -166,6 +144,7 @@ void Application::OnKeyEvent(GLFWwindow* window, int key, int action, int mods)
 			break;
 		case GLFW_KEY_ESCAPE:
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			isMouseOutOfFocus = true;
 			break;
 		case GLFW_KEY_Q:
 			glfwSetWindowShouldClose(window, true);
@@ -222,31 +201,26 @@ void Application::OnCharEvent(GLFWwindow* window, unsigned int codepoint)
 		break;
 	}
 }
-void Application::PollInputs()
+void Application::OnInputPoll()
 {
-	if (glfwGetKey(m_Window, GLFW_KEY_KP_8) == GLFW_PRESS)
-		m_Camera.Move(CameraDir::Up, speed, deltaTime);
-	else if (glfwGetKey(m_Window, GLFW_KEY_KP_2) == GLFW_PRESS)
-		m_Camera.Move(CameraDir::Down, speed, deltaTime);
-	if (glfwGetKey(m_Window, GLFW_KEY_KP_4) == GLFW_PRESS)
-		m_Camera.Move(CameraDir::Left, speed, deltaTime);
-	else if (glfwGetKey(m_Window, GLFW_KEY_KP_6) == GLFW_PRESS)
-		m_Camera.Move(CameraDir::Right, speed, deltaTime);
-
 	if (glfwGetKey(m_Window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		translationPos += glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * speed;
+		if(object)
+			translationPos += glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * speed;
 	}
 	else if (glfwGetKey(m_Window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		translationPos += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime * speed;
+		if (object)
+			translationPos += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime * speed;
 	}
 	if (glfwGetKey(m_Window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-		translationPos += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * speed;
+		if (object)
+			translationPos += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * speed;
 	}
 	else if (glfwGetKey(m_Window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		translationPos += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime * speed;
+		if (object)
+			translationPos += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime * speed;
 	}
 }
