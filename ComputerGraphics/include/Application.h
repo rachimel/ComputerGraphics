@@ -28,6 +28,9 @@ public:
 #endif
 	// FrameBuffer callback override is currently not supported.
 
+#if defined(CG_APPLICATION_POLL_INPUT)
+	void PollInputs();
+#endif
 // Basic Methods
 	int Init(std::string_view title);
 	void Run();
@@ -39,7 +42,8 @@ public:
 	void SetNearPlane(float zNear);
 	void SetFarPlane(float zFar);
 // Override Methods
-	void Update(float deltaTime);
+	void OnInit();
+	void Update();
 	void Render();
 // Callback entry & default callback handlers
 private:
@@ -69,5 +73,6 @@ private:
 	glm::vec2 m_MousePos{};
 
 	float lastTime{ 0.0f };
+	float deltaTime{ 0.0f };
 };
 

@@ -95,6 +95,8 @@
     <None Include="shaders\1_opengl_basics\circle.fs" />
     <None Include="shaders\99_labs\ripple.fs" />
     <None Include="shaders\99_labs\rippleColor.vs" />
+    <None Include="shaders\1_opengl_basics\perspectiveProjection.vs" />
+    <None Include="shaders\1_opengl_basics\vertexColor.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">
@@ -114,6 +116,15 @@
     </ClInclude>
     <ClInclude Include="include\Mesh.inl">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model.inl">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CG.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

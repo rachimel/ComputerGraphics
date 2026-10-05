@@ -56,10 +56,10 @@ void Application::CursorPosCallbackEntry(GLFWwindow* window, double xPos, double
 	Application* app = reinterpret_cast<Application*>(glfwGetWindowUserPointer(window));
 	if (app)
 	{
-		app->CursorPosCallback(window, static_cast<float>(xPos), static_cast<float>(yPos));
 #if defined(CG_APPLICATION_CUSTOM_CALLBACK_CURSOR_POS)
 		app->OnCursorMoveEvent(window, static_cast<float>(xPos), static_cast<float>(yPos));
 #endif
+		app->CursorPosCallback(window, static_cast<float>(xPos), static_cast<float>(yPos));
 	}
 }
 
@@ -101,6 +101,7 @@ void Application::FrameBufferSizeCallback(GLFWwindow* window, int width, int hei
 {
 	glViewport(0, 0, width, height);
 	m_ScreenSize = glm::vec2(static_cast<float>(width), static_cast<float>(height));
+	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }
 
 int Application::Init(std::string_view title)
@@ -160,7 +161,7 @@ int Application::Init(std::string_view title)
 	// OpenGL Function Settings
 	glViewport(0, 0, static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
 
-	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
+	OnInit();
 	return 0;
 }
 
@@ -169,10 +170,11 @@ void Application::Run()
 	while (!glfwWindowShouldClose(m_Window))
 	{
 		float currentTime = static_cast<float>(glfwGetTime());
-		float deltaTime = currentTime = lastTime;
-		lastTime = currentTime - lastTime;
+		deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
 
-		Update(deltaTime);
+		PollInputs();
+		Update();
 		Render();
 
 		glfwSwapBuffers(m_Window);
@@ -198,9 +200,11 @@ void Application::DisableOpenGLFeatures(GLenum features)
 void Application::SetNearPlane(float zNear)
 {
 	m_Near = zNear;
+	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }
 
 void Application::SetFarPlane(float zFar)
 {
 	m_Far = zFar;
+	projection = m_Camera.ProjectionMatrix(m_ScreenSize.x / m_ScreenSize.y, m_Near, m_Far);
 }

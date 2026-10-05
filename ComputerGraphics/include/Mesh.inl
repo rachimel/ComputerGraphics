@@ -1,4 +1,11 @@
 #include <Mesh.h>
+
+#include <iostream>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <gl/glew.h>
 #include <Shader.h>
 
@@ -28,10 +35,14 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, normal)));
 #endif
-#if defined(CG_MESH_ENABLE_TEX_COORD)
+#if defined(CG_MESH_ENABLE_TEXTURE)
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, texCoord)));
 #endif
 	glBindVertexArray(0);
 }
 
+void Mesh::Bind()
+{
+	glBindVertexArray(VAO);
+}

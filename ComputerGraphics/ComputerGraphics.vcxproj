@@ -153,6 +153,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\CG.h" />
     <ClInclude Include="include\Mesh.inl">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -247,17 +248,23 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="include\Mesh.h" />
+    <ClInclude Include="include\Model.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Model.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
     <None Include="shaders\1_opengl_basics\circle.fs" />
     <None Include="shaders\1_opengl_basics\orthoProjection.vs" />
     <None Include="shaders\1_opengl_basics\orthoStaticProjection.vs" />
     <None Include="shaders\1_opengl_basics\transparentColor.fs" />
     <None Include="shaders\1_opengl_basics\uniformColor.fs" />
+    <None Include="shaders\1_opengl_basics\vertexColor.fs" />
     <None Include="shaders\99_labs\ripple.fs" />
     <None Include="shaders\99_labs\rippleColor.vs" />
     <None Include="shaders\opengl-basics\quadShader.fs" />
     <None Include="shaders\opengl-basics\quadShader.vs" />
+    <None Include="shaders\1_opengl_basics\perspectiveProjection.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Camera.h" />
