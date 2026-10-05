@@ -222,7 +222,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\practice-14.cpp" />
+    <ClCompile Include="src\2_opengl_basics\practice-14.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\1_warming-up\warming-up1.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

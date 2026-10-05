@@ -83,7 +83,7 @@ void Application::CharCallbackEntry(GLFWwindow* window, unsigned int codepoint)
 #if defined(CG_APPLICATION_CUSTOM_CALLBACK_CHAR)	
 	Application* app = reinterpret_cast<Application*>(glfwGetWindowUserPointer(window));
 	if (app)
-		app->OnKeyEvent(window, key, action, mods);
+		app->OnCharEvent(window, codepoint);
 #endif
 }
 
