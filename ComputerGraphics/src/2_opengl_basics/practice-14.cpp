@@ -77,10 +77,21 @@ void Application::OnInit()
 
 void Application::Update()
 {
-	if (rotatePitch)
+	if (rotatePitch && rotateRoll)
+	{
 		pitch += pitchSign * angularSpeed * deltaTime;
-	if (rotateRoll)
+		roll += rollSign * angularSpeed * deltaTime;
+	}
+	else if (rotatePitch)
+	{
+		pitch += pitchSign * angularSpeed * deltaTime;
+		roll = 0.0f;
+	}
+	else if (rotateRoll)
+	{
+		pitch = 0.0f;
 		roll += rollSign *  angularSpeed * deltaTime;
+	}
 }
 
 void Application::Render()
@@ -175,25 +186,37 @@ void Application::OnCharEvent(GLFWwindow* window, unsigned int codepoint)
 		break;
 	case 'x':
 		if (rollSign == 1.0f && rotateRoll)
+		{
 			rotateRoll = false;
+			break;
+		}
 		rollSign = 1.0f;
 		rotateRoll = true;
 		break;
 	case 'X':
 		if (rollSign == -1.0f && rotateRoll)
+		{
 			rotateRoll = false;
+			break;
+		}
 		rollSign = -1.0f;
 		rotateRoll = true;
 		break;
 	case 'y':
 		if (pitchSign == 1.0f && rotatePitch)
+		{
 			rotatePitch = false;
+			break;
+		}
 		pitchSign = 1.0f;
 		rotatePitch = !rotatePitch;
 		break;
 	case 'Y':
 		if (pitchSign == -1.0f && rotatePitch)
+		{
 			rotatePitch = false;
+			break;
+		}
 		pitchSign = -1.0f;
 		rotatePitch = !rotatePitch;
 		break;
