@@ -20,7 +20,6 @@ public:
 	void OnCursorMoveEvent(GLFWwindow* window, float xPos, float yPos);
 #endif
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_KEY)
-#define CG_APPLICATION_CUSTOM_CALLBACK_KEY_IMPL
 	void OnKeyEvent(GLFWwindow* window, int key, int action, int mods);
 #endif
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_CHAR)
@@ -34,6 +33,7 @@ public:
 
 	void PollInputs();
 	void CaptureMouse();
+	bool IsOpenGLFeatureEnabled(unsigned int features);
 	void EnableOpenGLFeatures(unsigned int features);
 	void DisableOpenGLFeatures(unsigned int features);
 

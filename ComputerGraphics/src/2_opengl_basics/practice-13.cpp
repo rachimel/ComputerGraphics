@@ -82,9 +82,9 @@ void DrawPyramid(Shader& shader)
 
 void Application::OnInit()
 {
-	cube.emplace("data\\1_opengl_basic\\cube.obj");
-	pyramid.emplace("data\\1_opengl_basic\\pyramid.obj");
-	axes.emplace("data\\1_opengl_basic\\axes.obj");
+	cube.emplace("data\\1_opengl_basics\\cube.obj");
+	pyramid.emplace("data\\1_opengl_basics\\pyramid.obj");
+	axes.emplace("data\\1_opengl_basics\\axes.obj");
 
 	shader.emplace("shaders\\1_opengl_basics\\perspectiveProjection.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
 

@@ -252,6 +252,11 @@ void Application::CaptureMouse()
 	isMouseOutOfFocus = false;
 }
 
+bool Application::IsOpenGLFeatureEnabled(unsigned int features)
+{
+	return glIsEnabled(features);
+}
+
 void Application::EnableOpenGLFeatures(GLenum features)
 {
 	glEnable(features);

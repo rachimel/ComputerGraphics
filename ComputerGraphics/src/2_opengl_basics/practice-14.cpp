@@ -26,15 +26,15 @@ namespace
 	std::default_random_engine dre{ rd() };
 
 	GLenum drawingMode = GL_TRIANGLES;
-	float rollSign{ 1.0f };
+	float yawSign{ 1.0f };
 	float pitchSign{ 1.0f };
 	float angularSpeed{ 60.0f };
-	float roll{ 0.0f };
+	float yaw{ 0.0f };
 	float pitch{ 0.0f };
 
 	glm::vec3 translationPos{};
 
-	bool rotateRoll{};
+	bool rotateYaw{};
 	bool rotatePitch{};
 }
 
@@ -61,7 +61,7 @@ void Draw(Shader& shader)
 
 void Application::OnInit()
 {
-	axes.emplace("data\\1_opengl_basic\\axes.obj");
+	axes.emplace("data\\1_opengl_basics\\axes.obj");
 
 	shader.emplace("shaders\\1_opengl_basics\\perspectiveProjection.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
 
@@ -71,20 +71,20 @@ void Application::OnInit()
 
 void Application::Update()
 {
-	if (rotatePitch && rotateRoll)
+	if (rotatePitch && rotateYaw)
 	{
 		pitch += pitchSign * angularSpeed * deltaTime;
-		roll += rollSign * angularSpeed * deltaTime;
+		yaw += yawSign * angularSpeed * deltaTime;
 	}
 	else if (rotatePitch)
 	{
 		pitch += pitchSign * angularSpeed * deltaTime;
-		roll = 0.0f;
+		yaw = 0.0f;
 	}
-	else if (rotateRoll)
+	else if (rotateYaw)
 	{
 		pitch = 0.0f;
-		roll += rollSign *  angularSpeed * deltaTime;
+		yaw += yawSign *  angularSpeed * deltaTime;
 	}
 }
 
@@ -111,8 +111,8 @@ void Application::Render()
 	if(object)
 	{
 		model = glm::translate(model, translationPos);
-		model = glm::rotate(model, glm::radians(roll), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(pitch), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(pitch), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(yaw), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		shader->SetUniform("model", model);
 		Draw(*shader);
@@ -126,20 +126,20 @@ void Application::OnKeyEvent(GLFWwindow* window, int key, int action, int mods)
 		switch (key)
 		{
 		case GLFW_KEY_C:
-			object.emplace("data\\1_opengl_basic\\cube.obj");
+			object.emplace("data\\1_opengl_basics\\cube.obj");
 			break;
 		case GLFW_KEY_P:
-			object.emplace("data\\1_opengl_basic\\pyramid.obj");
+			object.emplace("data\\1_opengl_basics\\pyramid.obj");
 			break;
 		case GLFW_KEY_H:
-			if (glIsEnabled(GL_DEPTH_TEST))
+			if (IsOpenGLFeatureEnabled(GL_DEPTH_TEST))
 				DisableOpenGLFeatures(GL_DEPTH_TEST);
 			else
 				EnableOpenGLFeatures(GL_DEPTH_TEST);
 			break;
 		case GLFW_KEY_S:
 			translationPos = glm::vec3(0.0f);
-			rotateRoll = false;
+			rotateYaw = false;
 			rotatePitch = false;
 			break;
 		case GLFW_KEY_ESCAPE:
@@ -164,40 +164,40 @@ void Application::OnCharEvent(GLFWwindow* window, unsigned int codepoint)
 		drawingMode = GL_TRIANGLES;
 		break;
 	case 'x':
-		if (rollSign == 1.0f && rotateRoll)
-		{
-			rotateRoll = false;
-			break;
-		}
-		rollSign = 1.0f;
-		rotateRoll = true;
-		break;
-	case 'X':
-		if (rollSign == -1.0f && rotateRoll)
-		{
-			rotateRoll = false;
-			break;
-		}
-		rollSign = -1.0f;
-		rotateRoll = true;
-		break;
-	case 'y':
 		if (pitchSign == 1.0f && rotatePitch)
 		{
 			rotatePitch = false;
 			break;
 		}
 		pitchSign = 1.0f;
-		rotatePitch = !rotatePitch;
+		rotatePitch = true;
 		break;
-	case 'Y':
+	case 'X':
 		if (pitchSign == -1.0f && rotatePitch)
 		{
 			rotatePitch = false;
 			break;
 		}
 		pitchSign = -1.0f;
-		rotatePitch = !rotatePitch;
+		rotatePitch = true;
+		break;
+	case 'y':
+		if (yawSign == 1.0f && rotateYaw)
+		{
+			rotateYaw = false;
+			break;
+		}
+		yawSign = 1.0f;
+		rotateYaw = !rotateYaw;
+		break;
+	case 'Y':
+		if (yawSign == -1.0f && rotateYaw)
+		{
+			rotateYaw = false;
+			break;
+		}
+		yawSign = -1.0f;
+		rotateYaw = !rotateYaw;
 		break;
 	}
 }
