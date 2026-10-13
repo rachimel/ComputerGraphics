@@ -1,7 +1,7 @@
 #define CG_APPLICATION_CUSTOM_CALLBACK_KEY
-#define CG_MESH_ENABLE_COLOR
 #include <CG.h>
 
+#include <Shader.h>
 
 #include <random>
 #include <algorithm>
@@ -81,7 +81,7 @@ int main()
 
 void Application::OnInit()
 {
-	shader.emplace("shaders\\1_opengl_basics\\perspectiveProjection.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
+	shader.emplace("shaders\\1_opengl_basics\\projectionView.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
 	axes.emplace("data\\1_opengl_basics\\axes.obj");
 	object.emplace("data\\1_opengl_basics\\cube.obj");
 
@@ -142,41 +142,41 @@ void Application::Update()
 		auto& objectVertices = object->Meshes().front().m_Vertices;
 		for (int i = 0; i < 6; ++i)
 		{
-			objectVertices[12 + i].position = (1.0f - objectTransitionT) * objectUpperVertices[i].position;
-			objectVertices[12 + i].position.y = objectUpperVertices[i].position.y;
+			objectVertices[12 + i].pos = (1.0f - objectTransitionT) * objectUpperVertices[i].pos;
+			objectVertices[12 + i].pos.y = objectUpperVertices[i].pos.y;
 		}
 
-		objectVertices[1].position = (1.0f - objectTransitionT) * objectUpperVertices[2].position;
-		objectVertices[4].position = (1.0f - objectTransitionT) * objectUpperVertices[0].position;
-		objectVertices[5].position = (1.0f - objectTransitionT) * objectUpperVertices[2].position;
+		objectVertices[1].pos = (1.0f - objectTransitionT) * objectUpperVertices[2].pos;
+		objectVertices[4].pos = (1.0f - objectTransitionT) * objectUpperVertices[0].pos;
+		objectVertices[5].pos = (1.0f - objectTransitionT) * objectUpperVertices[2].pos;
 
-		objectVertices[1].position.y = objectUpperVertices[2].position.y;
-		objectVertices[4].position.y = objectUpperVertices[0].position.y;
-		objectVertices[5].position.y = objectUpperVertices[2].position.y;
+		objectVertices[1].pos.y = objectUpperVertices[2].pos.y;
+		objectVertices[4].pos.y = objectUpperVertices[0].pos.y;
+		objectVertices[5].pos.y = objectUpperVertices[2].pos.y;
 
-		objectVertices[7].position = (1.0f - objectTransitionT) * objectUpperVertices[4].position;
-		objectVertices[8].position = (1.0f - objectTransitionT) * objectUpperVertices[0].position;
-		objectVertices[11].position = (1.0f - objectTransitionT) * objectUpperVertices[4].position;
+		objectVertices[7].pos = (1.0f - objectTransitionT) * objectUpperVertices[4].pos;
+		objectVertices[8].pos = (1.0f - objectTransitionT) * objectUpperVertices[0].pos;
+		objectVertices[11].pos = (1.0f - objectTransitionT) * objectUpperVertices[4].pos;
 
-		objectVertices[7].position.y = objectUpperVertices[4].position.y;
-		objectVertices[8].position.y = objectUpperVertices[0].position.y;
-		objectVertices[11].position.y = objectUpperVertices[4].position.y;
+		objectVertices[7].pos.y = objectUpperVertices[4].pos.y;
+		objectVertices[8].pos.y = objectUpperVertices[0].pos.y;
+		objectVertices[11].pos.y = objectUpperVertices[4].pos.y;
 
-		objectVertices[19].position = (1.0f - objectTransitionT) * objectUpperVertices[2].position;
-		objectVertices[20].position = (1.0f - objectTransitionT) * objectUpperVertices[1].position;
-		objectVertices[22].position = (1.0f - objectTransitionT) * objectUpperVertices[1].position;
+		objectVertices[19].pos = (1.0f - objectTransitionT) * objectUpperVertices[2].pos;
+		objectVertices[20].pos = (1.0f - objectTransitionT) * objectUpperVertices[1].pos;
+		objectVertices[22].pos = (1.0f - objectTransitionT) * objectUpperVertices[1].pos;
 
-		objectVertices[19].position.y = objectUpperVertices[2].position.y;
-		objectVertices[20].position.y = objectUpperVertices[1].position.y;
-		objectVertices[22].position.y = objectUpperVertices[1].position.y;
+		objectVertices[19].pos.y = objectUpperVertices[2].pos.y;
+		objectVertices[20].pos.y = objectUpperVertices[1].pos.y;
+		objectVertices[22].pos.y = objectUpperVertices[1].pos.y;
 
-		objectVertices[32].position = (1.0f - objectTransitionT) * objectUpperVertices[1].position;
-		objectVertices[34].position = (1.0f - objectTransitionT) * objectUpperVertices[1].position;
-		objectVertices[35].position = (1.0f - objectTransitionT) * objectUpperVertices[4].position;
+		objectVertices[32].pos = (1.0f - objectTransitionT) * objectUpperVertices[1].pos;
+		objectVertices[34].pos = (1.0f - objectTransitionT) * objectUpperVertices[1].pos;
+		objectVertices[35].pos = (1.0f - objectTransitionT) * objectUpperVertices[4].pos;
 
-		objectVertices[32].position.y = objectUpperVertices[1].position.y;
-		objectVertices[34].position.y = objectUpperVertices[1].position.y;
-		objectVertices[35].position.y = objectUpperVertices[4].position.y;
+		objectVertices[32].pos.y = objectUpperVertices[1].pos.y;
+		objectVertices[34].pos.y = objectUpperVertices[1].pos.y;
+		objectVertices[35].pos.y = objectUpperVertices[4].pos.y;
 
 		object->Meshes().front().UpdateVertices();
 		if (objectTransitionT <= 0.0f || objectTransitionT >= 1.0f)
@@ -532,7 +532,7 @@ void Application::OnKeyEvent(GLFWwindow* window, int key, int action, int mods)
 				auto& vertices = object->Meshes().front().m_Vertices;
 				objectUpperVertices = std::vector<Vertex>(vertices.begin() + 12, vertices.begin() + 18);
 			}
-			else if(!isCube) object.emplace("data\\1_opengl_basicss\\cube.obj");
+			else if(!isCube) object.emplace("data\\1_opengl_basics\\cube.obj");
 			break;
 		case GLFW_KEY_Y:
 			rotateYaw = !rotateYaw;

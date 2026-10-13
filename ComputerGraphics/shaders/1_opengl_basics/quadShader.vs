@@ -1,13 +1,12 @@
 #version 460 core
 
-layout (location = 0) in vec3 a_Pos;
+layout (location = 0) in vec2 a_Pos;
+layout (location = 1) in vec2 a_TexCoord;
 
-uniform mat4 model;
-uniform mat4 projection;
-
-// 카메라는 항상 (0,0)에 고정이므로 view는 무시
+out vec2 TexCoord;
 
 void main()
 {
-	gl_Position = projection * model * vec4(a_Pos, 1.0);
+	gl_Position = vec4(a_Pos, 0.0, 1.0);
+	TexCoord = a_TexCoord;
 }

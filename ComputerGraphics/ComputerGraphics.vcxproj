@@ -154,9 +154,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\CG.h" />
-    <ClInclude Include="include\Mesh.inl">
+    <ClCompile Include="src\Mesh.cpp">
       <FileType>CppCode</FileType>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="src\2_opengl_basics\practice-13.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -166,6 +166,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\2_opengl_basics\practice-17.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-18.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -266,12 +270,18 @@
     <ClInclude Include="include\Model.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Model.inl">
+    <ClCompile Include="src\Model.cpp">
       <FileType>Document</FileType>
-    </ClInclude>
+    </ClCompile>
     <None Include="shaders\1_opengl_basics\circle.fs" />
+    <None Include="shaders\1_opengl_basics\gaussianBlur.fs" />
+    <None Include="shaders\1_opengl_basics\HDRBlurCompositeShader.fs" />
     <None Include="shaders\1_opengl_basics\orthoProjection.vs" />
     <None Include="shaders\1_opengl_basics\orthoStaticProjection.vs" />
+    <None Include="shaders\1_opengl_basics\projectionViewNormal.vs" />
+    <None Include="shaders\1_opengl_basics\quadShader.vs" />
+    <None Include="shaders\1_opengl_basics\singlePointLightShaderForHDRPass.fs" />
+    <None Include="shaders\1_opengl_basics\sunColor.fs" />
     <None Include="shaders\1_opengl_basics\transparentColor.fs" />
     <None Include="shaders\1_opengl_basics\uniformColor.fs" />
     <None Include="shaders\1_opengl_basics\vertexColor.fs" />
@@ -279,7 +289,7 @@
     <None Include="shaders\99_labs\rippleColor.vs" />
     <None Include="shaders\opengl-basics\quadShader.fs" />
     <None Include="shaders\opengl-basics\quadShader.vs" />
-    <None Include="shaders\1_opengl_basics\perspectiveProjection.vs" />
+    <None Include="shaders\1_opengl_basics\projectionView.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Camera.h" />

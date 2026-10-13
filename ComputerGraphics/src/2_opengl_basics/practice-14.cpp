@@ -2,7 +2,6 @@
 #define CG_APPLICATION_CUSTOM_CALLBACK_KEY
 #define CG_APPLICATION_CUSTOM_CALLBACK_CHAR
 
-#define CG_MESH_ENABLE_COLOR
 
 #include <optional>
 #include <CG.h>
@@ -63,7 +62,7 @@ void Application::OnInit()
 {
 	axes.emplace("data\\1_opengl_basics\\axes.obj");
 
-	shader.emplace("shaders\\1_opengl_basics\\perspectiveProjection.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
+	shader.emplace("shaders\\1_opengl_basics\\projectionView.vs", "shaders\\1_opengl_basics\\vertexColor.fs");
 
 	CreateCamera(glm::vec3(1.0f, 1.0f, 1.0f));
 	m_Camera->FocusAt(glm::vec3(0.0f, 0.0f, 0.0f));

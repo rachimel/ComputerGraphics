@@ -294,7 +294,7 @@ void DrawScene()
 		model = glm::translate(model, glm::vec3(quads[i].pos, 0.0f));
 		model = glm::scale(model, glm::vec3(quads[i].size, 1.0f));
 		glUniformMatrix4fv(glGetUniformLocation(quadShader, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		glUniform3fv(glGetUniformLocation(quadShader, "quadColor"), 1, glm::value_ptr(quads[i].color));
+		glUniform3fv(glGetUniformLocation(quadShader, "a_Color"), 1, glm::value_ptr(quads[i].color));
 		glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_INT, (void*)0);
 	}
 	glBindVertexArray(0);
@@ -319,8 +319,8 @@ void InitVAO()
 void InitShaders()
 {
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	auto vertexShaderPath = std::filesystem::current_path() / "shaders\\1_opengl_basics\\quadShader.vs";
-	auto fragmentShaderPath = std::filesystem::current_path() / "shaders\\1_opengl_basics\\quadShader.fs";
+	auto vertexShaderPath = std::filesystem::current_path() / "shaders\\1_opengl_basics\\quadProjectionShader.vs";
+	auto fragmentShaderPath = std::filesystem::current_path() / "shaders\\1_opengl_basics\\uniformColor.fs";
 	std::ifstream in{vertexShaderPath.string()};
 	if (!in)
 	{

@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-Camera::Camera(const glm::vec3 pos, const glm::vec3& worldUp, float fovy)
+Camera::Camera(const glm::vec3& pos, const glm::vec3& worldUp, float fovy)
 	: m_Pos{pos}, m_WorldUp{worldUp}, m_Fovy{fovy}
 {
 }

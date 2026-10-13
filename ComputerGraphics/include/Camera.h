@@ -12,7 +12,7 @@ class Camera
 {
 public:
 	Camera() = default;
-	Camera(const glm::vec3 pos, const glm::vec3& worldUp, float fovy);
+	Camera(const glm::vec3& pos, const glm::vec3& worldUp, float fovy);
 
 	void RefWorldUp(const glm::vec3& worldUp);
 	void Zoom(float fovy);
