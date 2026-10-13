@@ -50,11 +50,17 @@ void Camera::Move(CameraDir dir, float dt)
 	switch (dir)
 	{
 	case CameraDir::Up:
-		m_Pos += m_Up * dt * m_Speed;
+	{
+		glm::vec3 forward = glm::normalize(glm::vec3(m_Front.x, 0.0f, m_Front.z));
+		m_Pos += forward * dt * m_Speed;
 		break;
+	}
 	case CameraDir::Down:
-		m_Pos -= m_Up * dt * m_Speed;
+	{
+		glm::vec3 forward = glm::normalize(glm::vec3(m_Front.x, 0.0f, m_Front.z));
+		m_Pos -= forward * dt * m_Speed;
 		break;
+	}
 	case CameraDir::Right:
 		m_Pos += m_Right * dt * m_Speed;
 		break;
@@ -94,6 +100,4 @@ void Camera::UpdateCameraBasis()
 	m_Front = glm::normalize(lookDir);
 	m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
 	m_Up = glm::normalize(glm::cross(m_Right, m_Front));
-	m_Up.y = 0.0f;
-	m_Up = glm::normalize(m_Up);
 }

@@ -55,7 +55,7 @@ namespace
 
 int main()
 {
-	Application app{ 800, 800 };
+	Application app{ 1600, 1200 };
 	int code = app.Init("i hate computer graphics 5");
 	if (code) return code;
 	app.EnableOpenGLFeatures(GL_DEPTH_TEST);
@@ -219,12 +219,13 @@ void Application::Update()
 	std::fill(planetTransforms.begin(), planetTransforms.end(), glm::mat4(1.0f));
 
 	// apply transforms
-	for (int i = 0; i < 6; ++i)
-	{
+	for (int i = 0; i < 3; ++i)
 		orbitTransforms[i] = glm::translate(orbitTransforms[i], sunPos);
+
+	for (int i = 0; i < 3; ++i)
+	{
 		planetTransforms[i] = glm::translate(planetTransforms[i], sunPos);
 	}
-
 	// update orbit size
 	orbitTransforms[1] = glm::rotate(orbitTransforms[1], glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	orbitTransforms[2] = glm::rotate(orbitTransforms[2], glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -236,34 +237,27 @@ void Application::Update()
 	// first planet
 	planetTransforms[0] = glm::rotate(planetTransforms[0], glm::radians(planetOrbitT), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[0] = glm::translate(planetTransforms[0], glm::vec3(0.0f, 0.0f, 0.5f) * orbitRadius);
-	//planetTransforms[0] = glm::scale(planetTransforms[0], glm::vec3(0.8f));
 
 	planetTransforms[1] = glm::rotate(planetTransforms[1], glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	planetTransforms[1] = glm::rotate(planetTransforms[1], glm::radians(planetOrbitT + 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[1] = glm::translate(planetTransforms[1], glm::vec3(0.0f, 0.0f, 0.5f) * orbitRadius);
-	//planetTransforms[1] = glm::scale(planetTransforms[1], glm::vec3(0.8f));
 
 	planetTransforms[2] = glm::rotate(planetTransforms[2], glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	planetTransforms[2] = glm::rotate(planetTransforms[2], glm::radians(planetOrbitT - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[2] = glm::translate(planetTransforms[2], glm::vec3(0.0f, 0.0f, 0.5f) * orbitRadius);
-	//planetTransforms[2] = glm::scale(planetTransforms[2], glm::vec3(0.8f));
 
 	// update satellite orbits
 	orbitTransforms[3] = glm::translate(orbitTransforms[3], glm::vec3(planetTransforms[0] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	orbitTransforms[3] = glm::rotate(orbitTransforms[3], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
 	orbitTransforms[3] = glm::scale(orbitTransforms[3], glm::vec3(orbitRadius * 0.25f));
 
 	orbitTransforms[4] = glm::translate(orbitTransforms[4], glm::vec3(planetTransforms[1] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	orbitTransforms[4] = glm::rotate(orbitTransforms[4], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	orbitTransforms[4] = glm::scale(orbitTransforms[4], glm::vec3(orbitRadius * 0.25f));
 
 	orbitTransforms[5] = glm::translate(orbitTransforms[5], glm::vec3(planetTransforms[2] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	orbitTransforms[5] = glm::rotate(orbitTransforms[5], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	orbitTransforms[5] = glm::scale(orbitTransforms[5], glm::vec3(orbitRadius * 0.25f));
 
 	// update satellites
 	planetTransforms[3] = glm::translate(planetTransforms[3], glm::vec3(planetTransforms[0] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	planetTransforms[3] = glm::rotate(planetTransforms[3], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	planetTransforms[3] = glm::rotate(planetTransforms[3], glm::radians(planetOrbitT), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[3] = glm::translate(planetTransforms[3], glm::vec3(0.0f, 0.0f, 0.25f) * orbitRadius);
 	planetTransforms[3] = glm::rotate(planetTransforms[3], glm::radians(spinByZT), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -271,16 +265,12 @@ void Application::Update()
 
 
 	planetTransforms[4] = glm::translate(planetTransforms[4], glm::vec3(planetTransforms[1] * glm::vec4(0.0f, 0.0f, 0.0, 1.0f)));
-	//planetTransforms[4] = glm::rotate(planetTransforms[4], glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	planetTransforms[4] = glm::rotate(planetTransforms[4], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	planetTransforms[4] = glm::rotate(planetTransforms[4], glm::radians(planetOrbitT), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[4] = glm::translate(planetTransforms[4], glm::vec3(0.0f, 0.0f, 0.25f) * orbitRadius);
 	planetTransforms[4] = glm::rotate(planetTransforms[4], glm::radians(spinByZT), glm::vec3(0.0f, 0.0f, 1.0f));
 	planetTransforms[4] = glm::scale(planetTransforms[4], glm::vec3(0.25f));
 
 	planetTransforms[5] = glm::translate(planetTransforms[5], glm::vec3(planetTransforms[2] * glm::vec4(0.0f, 0.0f, 0.0, 1.0f)));
-	//planetTransforms[5] = glm::rotate(planetTransforms[5], glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	planetTransforms[5] = glm::rotate(planetTransforms[5], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	planetTransforms[5] = glm::rotate(planetTransforms[5], glm::radians(planetOrbitT), glm::vec3(0.0f, 1.0f, 0.0f));
 	planetTransforms[5] = glm::translate(planetTransforms[5], glm::vec3(0.0f, 0.0f, 0.25f) * orbitRadius);
 	planetTransforms[5] = glm::rotate(planetTransforms[5], glm::radians(spinByZT), glm::vec3(0.0f, 0.0f, 1.0f));

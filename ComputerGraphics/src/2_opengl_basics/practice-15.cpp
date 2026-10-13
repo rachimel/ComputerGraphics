@@ -266,7 +266,9 @@ void DrawObject()
 			// Rotate Up by Z
 			if (i == 2)
 			{
+				animationTransform = glm::translate(animationTransform, glm::vec3(0.0f, 0.5f, 0.0f));
 				animationTransform = glm::rotate(animationTransform, glm::radians(rotateUpperByZT), glm::vec3(0.0f, 0.0f, 1.0f));
+				animationTransform = glm::translate(animationTransform, glm::vec3(0.0f, -0.5f, 0.0f));
 				animationTransform = glm::rotate(animationTransform, glm::radians(BaseTwoFaceSpinAngle), glm::vec3(1.0f, 0.0f, 0.0f));
 				
 				animationTransform = glm::translate(animationTransform, glm::vec3(0.0f, -0.5f, -0.5f));
