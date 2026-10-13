@@ -3,11 +3,13 @@
 
 int main()
 {
-	Application app{ 1280,1080 };
+	Application app{ 1280,960 };
 	if (int code = app.Init("i hate computer graphics 6")) return code;
 	app.CaptureMouse();
 	glEnable(GL_DEPTH_TEST);
 	app.Run();
+
+
 }
 
 void Application::OnInit()
