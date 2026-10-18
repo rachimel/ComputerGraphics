@@ -1,8 +1,8 @@
 #include "Camera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-Camera::Camera(const glm::vec3& pos, const glm::vec3& worldUp, float fovy)
-	: m_Pos{pos}, m_WorldUp{worldUp}, m_Fovy{fovy}
+Camera::Camera(const glm::vec3& pos, const glm::vec3& worldUp, float fovy, float near, float far)
+	: m_Pos{pos}, m_WorldUp{worldUp}, m_Fovy{fovy}, m_Near{near}, m_Far{far}
 {
 }
 
@@ -67,12 +67,25 @@ void Camera::Move(CameraDir dir, float dt)
 	case CameraDir::Left:
 		m_Pos -= m_Right * dt * m_Speed;
 		break;
+
+
+	case CameraDir::Ascend:
+		m_Pos.y += m_Speed * dt;
+		break;
+	case CameraDir::Descend:
+		m_Pos.y -= m_Speed * dt;
+		break;
 	}
 }
 
-glm::mat4 Camera::ProjectionMatrix(float aspect, float zNear, float zFar) const
+void Camera::Move(const glm::vec3& delta)
 {
-	return glm::perspective(glm::radians(m_Fovy), aspect, zNear, zFar);
+	m_Pos += delta;
+}
+
+glm::mat4 Camera::ProjectionMatrix(float aspect) const
+{
+	return glm::perspective(glm::radians(m_Fovy), aspect, m_Near, m_Far);
 }
 
 glm::mat4 Camera::ViewMatrix() const
@@ -88,6 +101,21 @@ void Camera::ChangeSpeed(float speed)
 void Camera::ChangeSensitivity(float sensitivity)
 {
 	m_Sensitivity = sensitivity;
+}
+
+float Camera::QueryPitch() const
+{
+	return m_Pitch;
+}
+
+float Camera::QueryYaw() const
+{
+	return m_Yaw;
+}
+
+glm::vec3 Camera::QueryPos() const
+{
+	return m_Pos;
 }
 
 void Camera::UpdateCameraBasis()

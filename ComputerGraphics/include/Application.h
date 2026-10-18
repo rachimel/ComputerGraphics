@@ -33,27 +33,26 @@ public:
 
 	void PollInputs();
 	void CaptureMouse();
-	bool IsOpenGLFeatureEnabled(unsigned int features);
-	void EnableOpenGLFeatures(unsigned int features);
-	void DisableOpenGLFeatures(unsigned int features);
 
-	void CreateCamera(const glm::vec3& pos, const glm::vec3& worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float fovy = 45.0f, float yaw = 0.0f, float pitch = 0.0f);
+	void AppendCamera(const glm::vec3& pos, const glm::vec3& worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float fovy = 45.0f, float yaw = 0.0f, float pitch = 0.0f,
+		float near = 0.1f, float far = 1000.0f);
 	void SetNearPlane(float zNear);
 	void SetFarPlane(float zFar);
 // Override Methods
 	void OnInit();
 	void Update();
-	void Render();
+	void Clear();
+	void Render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, int cameraIdx);
 #if defined(CG_APPLICATION_CUSTOM_POLL_INPUT)
 	void OnInputPoll();
 #endif
 // Callback entry & default callback handlers
 private:
 	static void MouseButtonCallbackEntry(GLFWwindow* window, int button, int action, int mods);
-	void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-
+	void MouseButtonCallback(int button, int action, int mods);
+	void CameraMouseCallback(float xPos, float yPos);
 	static void CursorPosCallbackEntry(GLFWwindow* window, double xPos, double yPos);
-	void CursorPosCallback(GLFWwindow* window, float xPos, float yPos);
+	void CursorPosCallback(float xPos, float yPos);
 
 	static void KeyCallbackEntry(GLFWwindow* window, int key, int scancode, int action, int mods);
 	// void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -62,18 +61,18 @@ private:
 	// void CharCallback(GLFWwindow* window, unsigned int codepoint);
 
 	static void FrameBufferSizeCallbackEntry(GLFWwindow* window, int width, int height);
-	void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
+	void FrameBufferSizeCallback(int width, int height);
+
+	void PollCameraInputs(int cameraIdx);
+	void UpdateCameraViewportLayout();
 private:
 	GLFWwindow* m_Window;
 
-	bool isMouseOutOfFocus{true};
+	std::vector<class Camera> m_Cameras;
+	std::vector<glm::ivec4> m_CameraViewports;
+	int mouseActiveCamera{ -1 };
 
-	std::unique_ptr<class Camera> m_Camera;
-	glm::mat4 projection;
-	float m_Near{ 0.1f };
-	float m_Far{ 1000.0f };
-
-	glm::vec2 m_ScreenSize;
+	glm::vec2 m_ScreenSize{};
 	glm::vec2 m_MousePos{};
 
 	float lastTime{ 0.0f };

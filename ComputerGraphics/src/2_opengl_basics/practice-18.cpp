@@ -345,11 +345,11 @@ void Application::Render()
 	planetShader->SetUniform("view", view);
 
 	planetShader->SetUniform("lightPos", sunPosView);
-	planetShader->SetUniform("lightColor", sunColor);
+	planetShader->SetUniform("lightColor", glm::vec3(0.0f));
 	planetShader->SetUniform("objectColor", glm::vec3(0.0f, 0.5f, 0.0f));
 
 	planetShader->SetUniform("ambient", 0.2f);
-	planetShader->SetUniform("shininess", 1);
+	planetShader->SetUniform("shininess", 64);
 
 	if (renderWired) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	for (int i = 0; i < 3; ++i)

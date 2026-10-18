@@ -124,6 +124,7 @@
     <None Include="shaders\1_opengl_basics\quadShader.vs" />
     <None Include="shaders\1_opengl_basics\HDRBlurCompositeShader.fs" />
     <None Include="shaders\1_opengl_basics\singlePointLightShaderForHDRPass.fs" />
+    <None Include="shaders\1_opengl_basics\directionalPhongLightingShader.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">

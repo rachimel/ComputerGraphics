@@ -6,3 +6,5 @@
 #include <Mesh.h>
 
 #include <Model.h>
+
+#include <Shader.h>
