@@ -58,6 +58,11 @@ Model::Model(const std::filesystem::path& path)
 	loadModel(path);
 }
 
+void Model::Load(std::string_view pathString)
+{
+	loadModel(pathString);
+}
+
 void Model::loadModel(const std::filesystem::path& path)
 {
 	auto readPath = std::filesystem::current_path() / path;

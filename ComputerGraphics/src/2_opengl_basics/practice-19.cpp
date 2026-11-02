@@ -67,7 +67,7 @@ namespace
 }
 int main()
 {
-	Application app{ 1280,960 };
+	Application app{ 1600,1080 };
 	if (int code = app.Init("i hate computer graphics 6")) return code;
 	app.CaptureMouse();
 	glEnable(GL_DEPTH_TEST);
@@ -189,18 +189,23 @@ void Application::Update()
 		m_Cameras[0].FocusAt(glm::vec3(0.0f));
 	}
 	std::fill(tankTransform.begin(), tankTransform.end(), glm::mat4(1.0f));
+	float scaleY = 0.75f + 0.25f * glm::cos(glm::radians(scaleLowerT));
 	// core transform
-	auto coreRotation = glm::rotate(tankTransform[0], glm::radians(rotateCoreT), glm::vec3(0.0f, 1.0f, 0.0f));
-	tankTransform[0] = coreRotation * tankTransform[0];
+	auto coreRotation = glm::translate(tankTransform[0], tankPos);
+	coreRotation = glm::rotate(coreRotation, glm::radians(rotateCoreT), glm::vec3(0.0f, 1.0f, 0.0f));
+	coreRotation = glm::translate(coreRotation, -tankPos);
+
 	tankTransform[0] = glm::translate(tankTransform[0], tankPos);
+	tankTransform[0] = glm::translate(tankTransform[0], glm::vec3(0.0f, (2.0f * scaleY), 0.0f));
+	tankTransform[0] = coreRotation * tankTransform[0];
 
 	// Lower
 	{
-		tankTransform[1] = tankTransform[0] * tankTransform[1];
-		tankTransform[1] = glm::translate(tankTransform[1], glm::vec3(4.0f, (0.75f + 0.25f * glm::cos(glm::radians(scaleLowerT))) * -2.0f, 0.0f));
+		tankTransform[1] = glm::translate(tankTransform[1], glm::vec3(tankPos));
+		tankTransform[1] = glm::translate(tankTransform[1], glm::vec3(4.0f, -1.0f * (1.0f - scaleY), 0.0f));
 
-		tankTransform[2] = tankTransform[0] * tankTransform[2];
-		tankTransform[2] = glm::translate(tankTransform[2], glm::vec3(-4.0f, (0.75f + 0.25f * glm::cos(glm::radians(scaleLowerT))) *-2.0f, 0.0f));
+		tankTransform[2] = glm::translate(tankTransform[2], glm::vec3(tankPos));
+		tankTransform[2] = glm::translate(tankTransform[2], glm::vec3(-4.0f, -1.0f * (1.0f - scaleY), 0.0f));
 	}
 
 	// Upper
@@ -239,8 +244,11 @@ void Application::Update()
 
 	// Apply scales
 	tankTransform[0] = glm::scale(tankTransform[0], glm::vec3(5.0f, 1.0f, 1.0f));
-	tankTransform[1] = glm::scale(tankTransform[1], glm::vec3(2.0f, (0.5f + 0.5f * glm::cos(glm::radians(scaleLowerT))) * 1.0f, 4.0f));
-	tankTransform[2] = glm::scale(tankTransform[2], glm::vec3(2.0f, (0.5f + 0.5f * glm::cos(glm::radians(scaleLowerT))) * 1.0f, 4.0f));
+
+	tankTransform[1] = glm::scale(tankTransform[1], glm::vec3(2.0f, scaleY, 4.0f));
+
+	tankTransform[2] = glm::scale(tankTransform[2], glm::vec3(2.0f, scaleY, 4.0f));
+
 	tankTransform[3] = glm::scale(tankTransform[3], glm::vec3(1.5f, 1.0f, 2.0f));
 	tankTransform[4] = glm::scale(tankTransform[4], glm::vec3(1.5f, 1.0f, 2.0f));
 	tankTransform[5] = glm::scale(tankTransform[5], glm::vec3(0.5f, 0.5f, 3.0f));
@@ -260,7 +268,14 @@ void Application::Render(const glm::mat4& viewMatrix, const glm::mat4& projectio
 	lightingShader->Bind();
 	// Camera
 	lightingShader->SetUniform("view", viewMatrix);
-	lightingShader->SetUniform("projection", projectionMatrix);
+	auto projectionMatrixOverride =  projectionMatrix;
+	if(cameraIdx == 1 || cameraIdx == 2)
+	{
+		float aspect = (m_CameraViewports[cameraIdx].z - m_CameraViewports[cameraIdx].x) / (m_CameraViewports[cameraIdx].w - m_CameraViewports[cameraIdx].y);
+		float halfHeight =32.0f;
+		projectionMatrixOverride = glm::ortho(-halfHeight * aspect, halfHeight * aspect, -halfHeight, halfHeight, 0.1f, 1000.0f);
+	}
+	lightingShader->SetUniform("projection", projectionMatrixOverride);
 
 	lightingShader->SetUniform("model", planeTransform);
 	lightingShader->SetUniform("normalMatrix", glm::mat3(glm::inverse(glm::transpose(viewMatrix * planeTransform))));
@@ -402,6 +417,13 @@ void Application::OnCharEvent(GLFWwindow* window, unsigned int codepoint)
 			m_Cameras[0].PlaceAt(originalCameraPos);
 		}
 		cameraSpinT = 0.0f;
+		break;
+	case '+':
+		AppendCamera(glm::vec3(0.0f, 10.0f, -25.0f));
+		m_Cameras.back().FocusAt(tankPos);
+		break;
+	case '-':
+		PopCamera();
 		break;
 	}
 }

@@ -19,12 +19,15 @@ struct aiMaterial;
 class Model
 {
 public:
+	Model() = default;
 	Model(const std::filesystem::path& path);
 	Model(Model&&) noexcept = default;
 	Model& operator= (Model&&) = default; 
 	~Model() = default;
 
 	std::vector<Mesh>& Meshes() { return m_Meshes; }
+
+	void Load(std::string_view pathString);
 private:
 	// Code Referenced from :
 	// LearnOpenGL - Ch.4 Model Loading

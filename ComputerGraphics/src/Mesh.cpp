@@ -28,28 +28,35 @@ Mesh::~Mesh()
 
 Mesh::Mesh(Mesh&& rhs) noexcept
 	: VAO{rhs.VAO}, VBO{rhs.VBO}, EBO{rhs.EBO},
-	m_Vertices{std::move(rhs.m_Vertices)}, m_Indices{std::move(rhs.m_Indices)}
+	m_Layout{rhs.m_Layout},
+	m_Vertices{std::move(rhs.m_Vertices)}, m_Indices{std::move(rhs.m_Indices)},
+	m_Textures{std::move(rhs.m_Textures)}
 {
 	rhs.VAO = 0;
 	rhs.VBO = 0;
 	rhs.EBO = 0;
 }
 
-Mesh& Mesh::operator=(Mesh&& rhs) noexcept
-{
-	if (this == &rhs)
+	Mesh& Mesh::operator=(Mesh&& rhs) noexcept
 	{
+		if (this == &rhs)
+		{
+			return *this;
+		}
+		if (VAO) glDeleteVertexArrays(1, &VAO);
+		VAO = std::exchange(rhs.VAO, 0u);
+		if (VBO) glDeleteBuffers(1, &VBO);
+		VBO = std::exchange(rhs.VBO, 0u);
+		if (EBO) glDeleteBuffers(1, &EBO);
+		EBO = std::exchange(rhs.EBO, 0u);
+
+		m_Layout = rhs.m_Layout;
+		m_Vertices = std::move(rhs.m_Vertices);
+		m_Indices = std::move(rhs.m_Indices);
+		m_Textures = std::move(rhs.m_Textures);
+
 		return *this;
 	}
-	VAO = rhs.VAO;
-	VBO = rhs.VBO;
-	EBO = rhs.EBO;
-
-	m_Vertices = std::move(rhs.m_Vertices);
-	m_Indices = std::move(rhs.m_Indices);
-
-	return *this;
-}
 
 void Mesh::CreateVertexObjects()
 {

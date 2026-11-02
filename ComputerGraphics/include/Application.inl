@@ -182,6 +182,19 @@ int Application::Init(std::string_view title)
 	// OpenGL Function Settings
 	glViewport(0, 0, static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
 
+#if defined(_DEBUG)
+	std::println("Vendor: {}",
+		reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+
+	std::println("Renderer: {}",
+		reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+
+	std::println("OpenGL: {}",
+		reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+
+	std::println("GLEW: {}",
+		reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)));
+#endif
 	OnInit();
 	return 0;
 }
@@ -206,7 +219,8 @@ void Application::Run()
 		{
 			int width = m_CameraViewports[i].z - m_CameraViewports[i].x;
 			int height = m_CameraViewports[i].w - m_CameraViewports[i].y;
-			glViewport(m_CameraViewports[i].x, m_ScreenSize.y - m_CameraViewports[i].w, width, height);
+			if (width == 0 && height == 0) continue;
+			glViewport(m_CameraViewports[i].x, static_cast<int>(m_ScreenSize.y) - m_CameraViewports[i].w, width, height);
 			Render(m_Cameras[i].ViewMatrix(), m_Cameras[i].ProjectionMatrix(width / static_cast<float>(height)), i);
 		}
 
@@ -231,7 +245,13 @@ void Application::AppendCamera(
 	m_CameraViewports.push_back(glm::ivec4{});
 	UpdateCameraViewportLayout();
 }
-
+void Application::PopCamera()
+{
+	if (m_Cameras.empty()) return;
+	m_Cameras.pop_back();
+	m_CameraViewports.pop_back();
+	UpdateCameraViewportLayout();
+}
 void Application::PollInputs()
 {
 #if defined(CG_APPLICATION_CUSTOM_POLL_INPUT)

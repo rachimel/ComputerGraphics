@@ -105,6 +105,18 @@
     <ClCompile Include="src\2_opengl_basics\practice-19.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-20.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Animation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\opengl-basics\quadShader.vs" />
@@ -125,6 +137,8 @@
     <None Include="shaders\1_opengl_basics\HDRBlurCompositeShader.fs" />
     <None Include="shaders\1_opengl_basics\singlePointLightShaderForHDRPass.fs" />
     <None Include="shaders\1_opengl_basics\directionalPhongLightingShader.fs" />
+    <None Include="shaders\skybox.vs" />
+    <None Include="shaders\skybox.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">
@@ -146,6 +160,21 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include\CG.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TransformUtil.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Alias.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Animation.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

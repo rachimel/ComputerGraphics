@@ -58,8 +58,8 @@ int main()
 	Application app{ 1600, 1200 };
 	int code = app.Init("i hate computer graphics 5");
 	if (code) return code;
-	app.EnableOpenGLFeatures(GL_DEPTH_TEST);
-	app.EnableOpenGLFeatures(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	//app.EnableOpenGLFeatures(GL_BLEND);
 	app.CaptureMouse();
 	app.Run();

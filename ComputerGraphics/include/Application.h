@@ -36,6 +36,7 @@ public:
 
 	void AppendCamera(const glm::vec3& pos, const glm::vec3& worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float fovy = 45.0f, float yaw = 0.0f, float pitch = 0.0f,
 		float near = 0.1f, float far = 1000.0f);
+	void PopCamera();
 	void SetNearPlane(float zNear);
 	void SetFarPlane(float zFar);
 // Override Methods

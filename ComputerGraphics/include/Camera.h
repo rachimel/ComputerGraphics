@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-
+#include <Alias.h>
 enum class CameraDir
 {
 	Up,
