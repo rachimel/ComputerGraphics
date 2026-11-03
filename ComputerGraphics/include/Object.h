@@ -8,6 +8,13 @@
 
 constexpr unsigned int rootID = std::numeric_limits<unsigned int>::max();
 
+struct ObjectTRS
+{
+	unsigned int t{};
+	unsigned int r{};
+	unsigned int s{};
+};
+
 class Object
 {
 	struct Node
@@ -42,12 +49,36 @@ public:
 	void SetColor(unsigned int nodeID, const Vec4& color);
 
 	// returns transformation ID
+	ObjectTRS SetTRS(unsigned int nodeID, const Vec3& pos,
+		float angle, const Vec3& axis, const Vec3& scale);
+	ObjectTRS SetTRS(unsigned int nodeID, const Vec3& pos,
+		const Vec3& scale);
+
 	unsigned int SetPos(unsigned int nodeID, const Vec3& pos);
 	unsigned int SetRotation(unsigned int nodeID, float angle, const Vec3& axis);
 	unsigned int SetScale(unsigned int nodeID, const Vec3& scale);
 
 	unsigned int SetTransform(unsigned int nodeID, const Mat4& transform, bool passToChild);
-	void BindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id);
+	void EditTransform(unsigned int nodeID, unsigned int transformID, const Mat4& m);
+
+	void EnableAnimation(AnimationID id);
+	void DisableAnimation(AnimationID id);
+
+	AnimationID SetScaleAnimation(const Vec3& scale,
+		PlaybackType playbackType, AnimationConfig config = {});
+	AnimationID SetRotateAnimation(float angle,
+		const Vec3& axis, const Vec3& pivot, PlaybackType playbackType,
+		AnimationConfig config);
+
+	AnimationID SetRotateAnimation(float angle,
+		const Vec3& axis, PlaybackType playbackType, AnimationConfig config = {});
+	AnimationID SetTranslateAnimation(const Vec3& pos,
+		PlaybackType playbackType, AnimationConfig config = {});
+
+	bool isAnimationEnded(AnimationID id);
+	void SetAnimationT(AnimationID id, float t);
+
+	AnimationID BindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id);
 	void UnbindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id);
 
 	AnimationHandler animationHandler{};

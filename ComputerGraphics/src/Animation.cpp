@@ -6,35 +6,34 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-AnimationID AnimationHandler::SetScaleAnimation(const Vec3& scale, PlaybackType playbackType)
-{
-	return SetAnimation(glm::scale(Mat4{ 1.0f }, scale), playbackType, TransformType::Scale);
-}
-
-AnimationID AnimationHandler::SetRotateAnimation(float angle, const Vec3& axis, PlaybackType playbackType)
-{
-	AnimationID id = SetAnimation(Mat4{1.0f}, playbackType, TransformType::Rotation);
-	auto* a = Find(id);
-	a->axis = axis;
-	a->angle = angle;
-	return id;
-}
-
-AnimationID AnimationHandler::SetTranslateAnimation(const Vec3& pos, PlaybackType playbackType)
-{
-	return SetAnimation(glm::translate(Mat4{ 1.0f }, pos), playbackType, TransformType::Translation);
-}
-AnimationID AnimationHandler::SetAnimation(const Mat4& mat, PlaybackType playbackType, TransformType transformType)
+AnimationID AnimationHandler::SetAnimation(const Mat4& mat, PlaybackType playbackType, TransformType transformType,
+	AnimationConfig config)
 {
 	Animation a{};
 	a.transform = mat;
 	a.playbackType = playbackType;
 	a.transformType = transformType;
+	a.speed = config.speed;
+	a.loop = config.loop;
 	animations.push_back(a);
 
 	AnimationID id{1, ++nextID};
 	idToIndex.emplace(id, animations.size() - 1);
 	return id;
+}
+
+bool AnimationHandler::isEnded(AnimationID id)
+{
+	auto* a = Find(id);
+	if (!a) return false;
+	return !a->loop && (a->t >= 1.0f);
+}
+
+void AnimationHandler::EnableAnimation(AnimationID id)
+{
+	auto* a = Find(id);
+	if (!a) return;
+	a->enabled = true;
 }
 
 void AnimationHandler::DisableAnimation(AnimationID id)
@@ -48,6 +47,13 @@ void AnimationHandler::DisableAnimation(Animation& animation)
 {
 	if (!animation.enabled) return;
 	animation.enabled = false;
+}
+
+void AnimationHandler::SetT(AnimationID id, float t)
+{
+	auto* a = Find(id);
+	if (!a) return;
+	a->t = glm::clamp(t, 0.0f, 1.0f);
 }
 
 void AnimationHandler::SetSpeed(AnimationID id, float speed)
@@ -77,7 +83,11 @@ Mat4 AnimationHandler::GetTransform(AnimationID id)
 	case TransformType::Scale:
 		return (1.0f - t) * m + t * a->transform;
 	case TransformType::Rotation:
-		return glm::rotate(a->transform, glm::radians(t * *(a->angle)), *a->axis);
+	{
+		Mat4 m = glm::translate(a->transform, a->pivot);
+		m = glm::rotate(m, glm::radians(t * *(a->angle)), *a->axis);
+		return glm::translate(m, -(a->pivot));
+	}
 	default:
 		return m;
 	}
@@ -100,8 +110,7 @@ void AnimationHandler::Update(float deltaTime)
 		{
 			if (animation.playbackType == PlaybackType::PingPong || animation.playbackType == PlaybackType::Toggle)
 				animation.sign *= -1.0f;
-			if (!animation.loop || animation.playbackType == PlaybackType::Toggle)
-				DisableAnimation(animation);
+
 			if (animation.loop && animation.playbackType == PlaybackType::Default)
 				animation.t = 0.0f;
 		}

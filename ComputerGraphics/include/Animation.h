@@ -9,6 +9,7 @@ enum class PlaybackType
 	Default,
 	PingPong,
 	Toggle,
+	OneWay,
 };
 
 enum class TransformType
@@ -18,6 +19,11 @@ enum class TransformType
 	Rotation,
 };
 
+struct AnimationConfig
+{
+	float speed{ 5.0f };
+	bool loop{ false };
+};
 struct Animation
 {
 	Animation() = default;
@@ -32,6 +38,7 @@ struct Animation
 	Mat4 transform{ 1.0f };
 	std::optional<float> angle{};
 	std::optional<Vec3> axis{};
+	Vec3 pivot{ 0.0f };
 
 	float sign{ 1.0f };
 	float t{ 0.0f };
@@ -68,17 +75,17 @@ namespace std
 struct AnimationHandler
 {
 	inline static unsigned int nextID{ 0 };
-	AnimationID SetScaleAnimation(const Vec3& scale, 
-		PlaybackType playbackType);
-	AnimationID SetRotateAnimation(float angle,
-		const Vec3& axis, PlaybackType playbackType);
-	AnimationID SetTranslateAnimation(const Vec3& pos,
-		PlaybackType playbackType);
+
 	AnimationID SetAnimation(const Mat4& mat, 
-		PlaybackType playbackType, TransformType transformType);
+		PlaybackType playbackType, TransformType transformType,
+		AnimationConfig config = {});
+
+	bool isEnded(AnimationID id);
+	void EnableAnimation(AnimationID id);
 	void DisableAnimation(AnimationID animationID);
 	void DisableAnimation(Animation& animation);
 
+	void SetT(AnimationID id, float t); 
 	void SetSpeed(AnimationID id, float speed);
 	void SetLoop(AnimationID id, bool loop);
 

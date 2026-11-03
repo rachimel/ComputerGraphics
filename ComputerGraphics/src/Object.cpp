@@ -87,6 +87,24 @@ void Object::SetColor(unsigned int nodeID, const Vec4& color)
 }
 
 
+ObjectTRS Object::SetTRS(unsigned int nodeID, const Vec3& pos, float angle, const Vec3& axis, const Vec3& scale)
+{
+	return {
+		SetPos(nodeID, pos),
+		SetRotation(nodeID, angle, axis),
+		SetScale(nodeID, scale)
+	};
+}
+
+ObjectTRS Object::SetTRS(unsigned int nodeID, const Vec3& pos, const Vec3& scale)
+{
+	return {
+		SetPos(nodeID, pos),
+		SetRotation(nodeID, 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)),
+		SetScale(nodeID, scale)
+	};
+}
+
 unsigned int Object::SetPos(unsigned int nodeID, const Vec3& pos)
 {
 	return SetTransform(nodeID, glm::translate(Mat4{1.0f}, pos), true);
@@ -114,22 +132,83 @@ unsigned int Object::SetTransform(unsigned int nodeID, const Mat4& transform, bo
 	return id;
 }
 
-// Naive Implementation
-// O(N)
-void Object::BindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id)
+void Object::EditTransform(unsigned int nodeID, unsigned int transformID, const Mat4& m)
 {
-	// 1. early O(1)
 	if (nodeID >= nodes.size()) return;
-	// 2. validate animation id
-	auto* a = animationHandler.Find(id);
-	if (!a) return;
-	// 3. validate transform id
+
 	auto& transforms = nodes[nodeID].transforms;
 	auto it = std::find_if(transforms.begin(), transforms.end(), [&](const auto& t) {return t.id == transformID;});
 	if (it == transforms.end()) return;
 
+	it->m = m;
+}
+
+void Object::EnableAnimation(AnimationID id)
+{
+	animationHandler.EnableAnimation(id);
+}
+
+void Object::DisableAnimation(AnimationID id)
+{
+	animationHandler.DisableAnimation(id);
+}
+
+AnimationID Object::SetScaleAnimation(const Vec3& scale, PlaybackType playbackType, AnimationConfig config /*= {}*/)
+{
+	return animationHandler.SetAnimation(glm::scale(Mat4{ 1.0f }, scale), playbackType, TransformType::Scale, config);
+}
+
+AnimationID Object::SetRotateAnimation(float angle, const Vec3& axis, PlaybackType playbackType, AnimationConfig config)
+{
+	AnimationID id = animationHandler.SetAnimation(Mat4{ 1.0f }, playbackType, TransformType::Rotation, config);
+	auto* a = animationHandler.Find(id);
+	a->axis = axis;
+	a->angle = angle;
+	return id;
+}
+
+AnimationID Object::SetRotateAnimation(float angle, const Vec3& axis, const Vec3& pivot, PlaybackType playbackType, AnimationConfig config)
+{
+	AnimationID id = animationHandler.SetAnimation(Mat4{ 1.0f }, playbackType, TransformType::Rotation, config);
+	auto* a = animationHandler.Find(id);
+	a->axis = axis;
+	a->angle = angle;
+	a->pivot = pivot;
+	return id;
+}
+
+AnimationID Object::SetTranslateAnimation(const Vec3& pos, PlaybackType playbackType, AnimationConfig config /*= {}*/)
+{
+	return animationHandler.SetAnimation(glm::translate(Mat4{ 1.0f }, pos), playbackType, TransformType::Translation, config);
+}
+
+bool Object::isAnimationEnded(AnimationID id)
+{
+	return animationHandler.isEnded(id);
+}
+
+void Object::SetAnimationT(AnimationID id, float t)
+{
+	animationHandler.SetT(id, t);
+}
+
+// Naive Implementation
+// O(N)
+AnimationID Object::BindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id)
+{
+	// 1. early O(1)
+	if (nodeID >= nodes.size()) return {};
+	// 2. validate animation id
+	auto* a = animationHandler.Find(id);
+	if (!a) return {};
+	// 3. validate transform id
+	auto& transforms = nodes[nodeID].transforms;
+	auto it = std::find_if(transforms.begin(), transforms.end(), [&](const auto& t) {return t.id == transformID;});
+	if (it == transforms.end()) return {};
+
 	// 4. link animation id to transform
 	it->registeredAnimations.push_back(id);
+	return id;
 }
 
 void Object::UnbindAnimation(unsigned int nodeID, unsigned int transformID, AnimationID id)
