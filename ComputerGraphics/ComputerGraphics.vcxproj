@@ -153,6 +153,35 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\2_opengl_basics\practice-23.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-24.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-26.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-27.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-28.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\pratice-29.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\2_test\test.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\Timeline.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\Alias.h" />
@@ -160,8 +189,8 @@
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\2_opengl_basics\practice-20.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\2_opengl_basics\practice-19.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -281,8 +310,10 @@
     </ClInclude>
     <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\Model.h" />
+    <ClInclude Include="include\ObjectCollection.h" />
+    <ClInclude Include="include\Timeline.h" />
     <ClInclude Include="include\Transform.h" />
-    <ClInclude Include="include\TransformUtil.h" />
+    <ClInclude Include="include\Util.h" />
     <ClInclude Include="include\Object.h" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +326,7 @@
     <None Include="shaders\1_opengl_basics\HDRBlurCompositeShader.fs" />
     <None Include="shaders\1_opengl_basics\orthoProjection.vs" />
     <None Include="shaders\1_opengl_basics\orthoStaticProjection.vs" />
+    <None Include="shaders\1_opengl_basics\pointPhongLight.fs" />
     <None Include="shaders\1_opengl_basics\projectionViewNormal.vs" />
     <None Include="shaders\1_opengl_basics\quadShader.vs" />
     <None Include="shaders\1_opengl_basics\singlePointLightShaderForHDRPass.fs" />

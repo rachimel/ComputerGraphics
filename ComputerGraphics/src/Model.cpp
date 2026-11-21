@@ -177,9 +177,9 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 		std::vector<Texture> diffuseMaps = loadMaterialTexture(material, aiTextureType_DIFFUSE, "diffuseMaps");
-		textures.append_range(diffuseMaps);
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		std::vector<Texture> specularMaps = loadMaterialTexture(material, aiTextureType_SPECULAR, "specularMaps");
-		textures.append_range(specularMaps);
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 	return Mesh{ tag, vertices, indices, textures };
 }

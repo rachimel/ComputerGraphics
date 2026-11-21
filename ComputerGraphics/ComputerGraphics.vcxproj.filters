@@ -117,6 +117,30 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="src\Timeline.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_test\test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-23.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-24.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-26.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-27.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\practice-28.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\2_opengl_basics\pratice-29.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\opengl-basics\quadShader.vs" />
@@ -139,6 +163,7 @@
     <None Include="shaders\1_opengl_basics\directionalPhongLightingShader.fs" />
     <None Include="shaders\skybox.vs" />
     <None Include="shaders\skybox.fs" />
+    <None Include="shaders\1_opengl_basics\pointPhongLight.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">
@@ -162,7 +187,7 @@
     <ClInclude Include="include\CG.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\TransformUtil.h">
+    <ClInclude Include="include\Util.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include\Alias.h">
@@ -175,6 +200,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include\Transform.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ObjectCollection.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timeline.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <utility> // std::to_underlying (C++23)
 #include <glm/glm.hpp>
 
 class Shader;

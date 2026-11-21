@@ -14,16 +14,16 @@ public:
 	// You can override the following callbacks by defining macro before including the Application Header:
 	// APPLICATION_CUSTOM_CALLBACK_(CALLBACK_NAME)
 #if defined(CG_APPLICATION_CUSTOM_CALLBACK_MOUSE_BUTTON)
-	void OnMouseButtonEvent(GLFWwindow* window, int key, int action, int mods);
+	void OnMouseButtonEvent(int key, int action, int mods);
 #endif
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_CURSOR_POS)
-	void OnCursorMoveEvent(GLFWwindow* window, float xPos, float yPos);
+	void OnCursorMoveEvent(float xPos, float yPos);
 #endif
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_KEY)
-	void OnKeyEvent(GLFWwindow* window, int key, int action, int mods);
+	void OnKeyEvent(int key, int action, int mods);
 #endif
 #if defined (CG_APPLICATION_CUSTOM_CALLBACK_CHAR)
-	void OnCharEvent(GLFWwindow* window, unsigned int codepoint);
+	void OnCharEvent(unsigned int codepoint);
 #endif
 	// FrameBuffer callback override is currently not supported.
 

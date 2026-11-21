@@ -98,7 +98,7 @@ void Application::KeyCallbackEntry(GLFWwindow* window, int key, int scancode, in
 #if defined(CG_APPLICATION_CUSTOM_CALLBACK_KEY)	
 	Application* app = reinterpret_cast<Application*>(glfwGetWindowUserPointer(window));
 	if (app)
-		app->OnKeyEvent(window, key, action, mods);
+		app->OnKeyEvent(key, action, mods);
 #endif
 }
 
@@ -108,7 +108,7 @@ void Application::CharCallbackEntry(GLFWwindow* window, unsigned int codepoint)
 #if defined(CG_APPLICATION_CUSTOM_CALLBACK_CHAR)	
 	Application* app = reinterpret_cast<Application*>(glfwGetWindowUserPointer(window));
 	if (app)
-		app->OnCharEvent(window, codepoint);
+		app->OnCharEvent(codepoint);
 #endif
 }
 
